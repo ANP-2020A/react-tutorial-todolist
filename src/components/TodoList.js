@@ -4,6 +4,9 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/todo-list.css';
 import Spinner from './Spinner';
+import UserInfo from './UserInfo';
+import UserTaskForm from './UserTaskForm';
+import UserTaskList from './UserTaskList';
 
 const TodoList = () => {
 
@@ -86,22 +89,7 @@ const TodoList = () => {
 
       <h1>El ancho de la ventana es: { windowWith }</h1>
 
-
-      <div>
-        <h1>Información del usuario</h1>
-        {
-          userInfo
-            ?
-            <ul>
-              <li>{ userInfo.name }</li>
-              <li>{ userInfo.email }</li>
-              <li>{ userInfo.website }</li>
-              <li>{ userInfo.phone }</li>
-            </ul>
-            : <Spinner />
-        }
-      </div>
-
+      <UserInfo userInfo={ userInfo } />
 
       <button onClick={ handleDarkMode }>
         Cambiar a modo { darkMode
@@ -109,57 +97,12 @@ const TodoList = () => {
         : 'oscuro' }
       </button>
 
-      <div>
-        <label htmlFor='task'>Tarea</label>
-        <input type='text' id='task' />
+      <UserTaskForm onAddTask={ handleAddTask } />
 
-        <button onClick={ handleAddTask }>Agregar tarea</button>
-      </div>
-      <h1>Lista de tareas pendientes ({ todos.length } en total)</h1>
-      <table>
-        <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Eliminar</th>
-          <th>Completar</th>
-        </tr>
-        </thead>
-        <tbody>
-        {
-          todos.map( ( task, index ) => (
-              <tr key={ index }>
-                <td>{ task }</td>
-                <td>
-                  <button onClick={ () => handleDeleteTask( index ) }>Eliminar</button>
-                </td>
-                <td>
-                  <button onClick={ () => handleCompleteTask( index ) }>Completada</button>
-                </td>
-              </tr>
-            )
-          )
-        }
-        </tbody>
-      </table>
-
-      <h1>Lista de tareas completadas ({ completed.length } en total)</h1>
-      <table>
-        <thead>
-        <tr>
-          <th>Nombre</th>
-        </tr>
-        </thead>
-        <tbody>
-        {
-          completed.map( ( task, index ) => (
-              <tr key={ index }>
-                <td>{ task }</td>
-              </tr>
-            )
-          )
-        }
-        </tbody>
-      </table>
+      <UserTaskList todos={ todos }
+                    completed={ completed }
+                    onCompleteTask={ handleCompleteTask }
+                    onDeleteTask={ handleDeleteTask } />
     </div>
   );
 };
